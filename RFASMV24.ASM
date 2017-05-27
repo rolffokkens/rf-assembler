@@ -1,10 +1,18 @@
 ;
-; Source van RF-Assembler
+; Source code of RF-Assembler
+; RF-Assembler is Copyright (c) 1988-2017 Rolf Fokkens
 ;
-; Correctie van V2.2
-; VALEXP/VALTRM was fout
-; JP (HL),(IX),(IY) fout
+; This program is free software; you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation; version 2 dated June, 1991, or
+; (at your option) version 3 dated 29 June, 2007.
 ;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;    
+; You should have received a copy of the GNU General Public License
 ;
 ADD1 EQU 3271
 ADD2 EQU 62819
@@ -158,10 +166,14 @@ DISKMA PUSH AF
  POP AF
  RET 
 ;
+; Switch to screenmode
+;
 CHGMOD RST 30H
  DEFB 0
  DEFW 5FH
  RET 
+;
+; One character input (waiting)
 ;
 CHGET PUSH BC
  PUSH DE
@@ -173,6 +185,8 @@ CHGET PUSH BC
  POP DE
  POP BC
  RET 
+;
+; Displays one character
 ;
 CHPUT PUSH AF
  PUSH BC
@@ -187,6 +201,8 @@ CHPUT PUSH AF
  POP AF
  RET 
 ;
+; Sends one character to printer
+;
 LPTOUT PUSH BC
  PUSH DE
  PUSH HL
@@ -198,6 +214,8 @@ LPTOUT PUSH BC
  POP BC
  RET 
 ;
+; Tests printer status
+;
 LPTSTT PUSH BC
  PUSH DE
  PUSH HL
@@ -208,6 +226,8 @@ LPTSTT PUSH BC
  POP DE
  POP BC
  RET 
+;
+; Alternates the CAP lamp status
 ;
 CHGCAP PUSH BC
  PUSH DE
@@ -393,44 +413,51 @@ SKPLB3 POP DE
  INC A
  RET 
 ;
-ILLBL DEFW 0C2C1H
- DEFW 0C4C5H
- DEFW 0C8CCH
- DEFW 0D2C9H
- DEFB 0C9H
+; Illegal labels
+;
+ILLBL DEFB 'A'+80H
+ DEFB 'B'+80H
+ DEFB 'C'+80H
+ DEFB 'D'+80H
+ DEFB 'E'+80H
+ DEFB 'H'+80H
+ DEFB 'L'+80H
+ DEFB 'I'+80H
+ DEFB 'R'+80H
+ DEFB 'I'+80H
  DEFM 'XH'
- DEFB 0C9H
+ DEFB 'I'+80H
  DEFM 'XL'
- DEFB 0C9H
+ DEFB 'I'+80H
  DEFM 'YH'
- DEFB 0C9H
+ DEFB 'I'+80H
  DEFM 'YL'
- DEFB 0C2H
+ DEFB 'B'+80H
  DEFB 'C'
- DEFB 0C4H
+ DEFB 'D'+80H
  DEFB 'E'
- DEFB 0C8H
+ DEFB 'H'+80H
  DEFB 'L'
- DEFB 0C1H
+ DEFB 'A'+80H
  DEFB 'F'
- DEFB 0D3H
+ DEFB 'S'+80H
  DEFB 'P'
- DEFB 0C9H
+ DEFB 'I'+80H
  DEFB 'X'
- DEFB 0C9H
+ DEFB 'I'+80H
  DEFB 'Y'
-FLAGS0 DEFB 0CEH
+FLAGS0 DEFB 'N'+80H
  DEFB 'Z'
- DEFB 0DAH
- DEFB 0CEH
+ DEFB 'Z'+80H
+ DEFB 'N'+80H
  DEFB 'C'
- DEFB 0C3H
- DEFB 0D0H
+ DEFB 'C'+80H
+ DEFB 'P'+80H
  DEFB 'O'
- DEFB 0D0H
+ DEFB 'P'+80H
  DEFB 'E'
- DEFB 0D0H
- DEFB 0CDH
+ DEFB 'P'+80H
+ DEFB 'M'+80H
  NOP 
 ;
 ASMLINI LD A,0FFH
@@ -7637,5 +7664,4 @@ HELPFILE NOP
  DEFM 'RFASSEM HLP'
 ;
 FREEMEM NOP 
-ELPMES DEFB 27
- DEFM
+ELPM
